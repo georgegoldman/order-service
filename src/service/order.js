@@ -1,6 +1,6 @@
 const BaseService = require('./base_service');
 
-module.exports =  class CustomerService extends BaseService {
+module.exports =  class OrderService extends BaseService {
         /**
          * @constructor  Instance of our logger.
          * @param  {object}  config  Service config
@@ -16,19 +16,14 @@ module.exports =  class CustomerService extends BaseService {
                 this.mongoose = mongoose
         }
 
-        async createCustomer(req, res) {
+        async createOrder(req, res) {
                 
                 try {
-			const Customer = this.mongoose.model('Customer')
-			const { email } = req.body
-			const customer = await Customer.findOne({ email })
-			if (customer) {
-				res.json('customer already exist')
-                                return;
-			}
-                        let newCustomer = new Customer({email});
-                        const createUser = await newCustomer.save()
-                        res.json(createUser);
+			const Order = this.mongoose.model('Order')
+			const { customerId, status } = req.body			
+                        let newOrder = new Order({customerId, status});
+                        const createOrder = await newOrder.save()
+                        res.json(createOrder);
                         return;
                 } catch (error) {
                         console.log(error)
@@ -38,18 +33,18 @@ module.exports =  class CustomerService extends BaseService {
 
         }
 
-        async getCustomer(req, res) {
+        async getOrder(req, res) {
                 
                 try {
-			const Customer = this.mongoose.model('Customer')
+			const Order = this.mongoose.model('Order')
 			const { id } = req.params
                         const _id = id
-			const customer = await Customer.findOne({ _id })
-			if (customer) {
-				res.json(customer)
+			const order = await Order.findOne({ _id })
+			if (order) {
+				res.json(order)
                                 return;
 			}
-                        res.json('customer does not exit');
+                        res.json('order does not exit');
                         return;
                 } catch (error) {
                         console.log(error)
@@ -59,25 +54,25 @@ module.exports =  class CustomerService extends BaseService {
 
         }
 
-        async upateCustomer(req, res) {
+        async upateOrder(req, res) {
                 
                 try {
-			const Customer = this.mongoose.model('Customer')
+			const Order = this.mongoose.model('Order')
 			const { id } = req.params
-                        const {email } = req.body
+                        const { status } = req.body
                         const _id = id
-			const customer = await Customer.findOne({ _id })
-			if (customer) {
-                                const customerUpdate = await Customer.findOneAndUpdate(
+			const order = await Order.findOne({ _id })
+			if (order) {
+                                const orderUpdate = await Order.findOneAndUpdate(
                                         {"_id": _id},
-                                        { $set:  { "email" : `${email}`} },
+                                        { $set:  { "status" : `${status}`} },
                                         {returnNewDocument: true}
                                     )
-				res.json(customerUpdate)
+				res.json(orderUpdate)
                                 return;
 			}
                         console.log('pk');
-                        res.json('can\'t update customer that does not exit');
+                        res.json('can\'t update order that does not exit');
                         return;
                 } catch (error) {
                         console.log(error)
@@ -87,21 +82,21 @@ module.exports =  class CustomerService extends BaseService {
 
         }
 
-        async deleteCustomer(req, res) {
+        async deleteOrder(req, res) {
                 
                 try {
-			const Customer = this.mongoose.model('Customer')
+			const Order = this.mongoose.model('Order')
 			const { id } = req.params
                         const _id = id
-			const customer = await Customer.findOne({ _id })
-			if (customer) {
-                                const customerUpdate = await Customer.deleteOne(
+			const order = await Order.findOne({ _id })
+			if (order) {
+                                const orderUpdate = await Order.deleteOne(
                                         {"_id": _id},
                                     )
-				res.json(customerUpdate)
+				res.json(orderUpdate)
                                 return;
 			}
-                        res.json('can\'t delete customer that does not exit');
+                        res.json('can\'t delete order that does not exit');
                         return;
                 } catch (error) {
                         console.log(error)

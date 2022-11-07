@@ -3,7 +3,8 @@
 const joi = require('joi')
 
 module.exports = joi.object().keys({
-    email: joi.string()
-        .email({ minDomainSegment: 2, tlds: { allow: '*' } })
+    customerId: joi.string()
         .required(),
+    status: joi.string()
+        .required()
 })

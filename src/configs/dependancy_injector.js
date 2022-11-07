@@ -35,16 +35,16 @@ serviceLocator.register('mongoose', () => {
     return require('mongoose')
 })
 
-serviceLocator.register('customerService', (serviceLocator) => {
+serviceLocator.register('orderService', (serviceLocator) => {
     const log = serviceLocator.get('logger')
     const util = serviceLocator.get('util')
     const errorHandler = serviceLocator.get('errs')
     const request = serviceLocator.get('request')
-    const config = serviceLocator.get('config').customer
+    const config = serviceLocator.get('config').order
     const mongoose = serviceLocator.get('mongoose')
-    const CustomerService = require('../service/customer')
+    const OrderService = require('../service/order')
 
-    return new CustomerService(log, util, errorHandler, request, config, mongoose)
+    return new OrderService(log, util, errorHandler, request, config, mongoose)
 })
 
 module.exports = serviceLocator
